@@ -11,5 +11,5 @@
 # Hyperparameter evolution commands
 while true; do
   # python train.py --batch 64 --weights yolov5m.pt --data voc.yaml --img 512 --epochs 50 --evolve --bucket ult/evolve/voc --device $1
-  python train.py --batch 40 --weights yolov5m.pt --data coco.yaml --img 640 --epochs 30 --evolve --bucket ult/evolve/coco --device $1
+  python train.py --batch 40 --weights yolov5m.pt --data /content/DhakaAI.yaml --img 640 --epochs 30 --evolve --bucket ult/evolve/coco --device $1
 done
