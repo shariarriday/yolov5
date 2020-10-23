@@ -71,7 +71,7 @@ def test(data,
         data = yaml.load(f, Loader=yaml.FullLoader)  # model dict
     check_dataset(data)  # check
     nc = 1 if single_cls else int(data['nc'])  # number of classes
-    iouv = torch.linspace(0.5, 0.95, 10).to(device)  # iou vector for mAP@0.5:0.95
+    iouv = torch.linspace(0.5, 0.75, 10).to(device)  # iou vector for mAP@0.5:0.75
     niou = iouv.numel()
 
     # Dataloader
@@ -85,7 +85,7 @@ def test(data,
     seen = 0
     names = model.names if hasattr(model, 'names') else model.module.names
     coco91class = coco80_to_coco91_class()
-    s = ('%20s' + '%12s' * 6) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP@.5', 'mAP@.5:.95')
+    s = ('%20s' + '%12s' * 6) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP@.5', 'mAP@.5:.75')
     p, r, f1, mp, mr, map50, map, t0, t1 = 0., 0., 0., 0., 0., 0., 0., 0., 0.
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class = [], [], [], []
@@ -131,9 +131,9 @@ def test(data,
                 x = pred.clone()
                 x[:, :4] = scale_coords(img[si].shape[1:], x[:, :4], shapes[si][0], shapes[si][1])  # to original
                 for *xyxy, conf, cls in x:
-                    xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
+                    #xywh = (xyxy2xywh(torch.tensor(xyxy).view(1, 4)) / gn).view(-1).tolist()  # normalized xywh
                     with open(str(out / Path(paths[si]).stem) + '.txt', 'a') as f:
-                        f.write(('%g ' * 5 + '\n') % (cls, *xywh))  # label format
+                        f.write(('%g ' * 8 + '\n') % (cls, conf, *xyxy , gn[0] , gn[1]))  # label format
 
             # Clip boxes to image bounds
             clip_coords(pred, (height, width))
