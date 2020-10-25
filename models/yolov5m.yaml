@@ -1,13 +1,13 @@
 # parameters
-nc: 80  # number of classes
+nc: 21  # number of classes
 depth_multiple: 0.67  # model depth multiple
 width_multiple: 0.75  # layer channel multiple
 
 # anchors
 anchors:
-  - [10,13, 16,30, 33,23]  # P3/8
-  - [30,61, 62,45, 59,119]  # P4/16
-  - [116,90, 156,198, 373,326]  # P5/32
+  - [7,7,  13,14,  24,17]  # P3/8
+  - [22,30,  45,31,  40,54]  # P4/16
+  - [80,59,  109,112,  259,177]  # P5/32
 
 # YOLOv5 backbone
 backbone:
