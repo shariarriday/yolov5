@@ -204,8 +204,8 @@ def test(data,
         nt = torch.zeros(1)
 
     # Print results
-    pf = '%20s' + '%12.3g' * 7  # print format
-    print(pf % ('all', seen, nt.sum(), mp, mr, map50, map75, map))
+    pf = '%20s' + '%12.3g' * 8  # print format
+    print(pf % ('all', seen, nt.sum(), mp, mr, map50, map75, map , acc))
 
     # Print results per class
     if verbose and nc > 1 and len(stats):
