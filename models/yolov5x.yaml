@@ -5,9 +5,10 @@ width_multiple: 1.25  # layer channel multiple
 
 # anchors
 anchors:
-  - [7,7,  13,14,  24,17 , 30,32]  # P3/8
-  - [22,30,  45,31,  40,54 , 70,70]  # P4/16
-  - [80,59,  109,112,  259,177 , 200,300]  # P5/32
+  - [3,3,  4,4,  5,5]
+  - [7,7,  13,14,  24,17]  # P3/8
+  - [22,30,  45,31,  40,54]  # P4/16
+  - [80,59,  109,112,  259,177]  # P5/32
 
 # YOLOv5 backbone
 backbone:
@@ -44,5 +45,5 @@ head:
    [[-1, 10], 1, Concat, [1]],  # cat head P5
    [-1, 3, BottleneckCSP, [1024, False]],  # 23 (P5/32-large)
 
-   [[17, 20, 23], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)
+   [[13, 17, 20, 23], 1, Detect, [nc, anchors]],  # Detect(P3, P4, P5)
   ]
