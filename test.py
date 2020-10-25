@@ -85,8 +85,8 @@ def test(data,
     seen = 0
     names = model.names if hasattr(model, 'names') else model.module.names
     coco91class = coco80_to_coco91_class()
-    s = ('%20s' + '%12s' * 7) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP@.5','mAP@.75','mAP@.5:.95')
-    p, r, f1, mp, mr, map50, map, t0, t1 = 0., 0., 0., 0., 0., 0., 0., 0., 0.
+    s = ('%20s' + '%12s' * 8) % ('Class', 'Images', 'Targets', 'P', 'R', 'mAP@.5','mAP@.75','mAP@.5:.95','Accuracy')
+    p, r, f1, mp, mr, map50, map, map75, acc, t0, t1 = 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class = [], [], [], []
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
@@ -198,6 +198,7 @@ def test(data,
         p, r, ap, f1, ap_class = ap_per_class(*stats, plot=plots, fname=save_dir / 'precision-recall_curve.png')
         p, r, ap50, ap75, ap = p[:, 0], r[:, 0], ap[:, 0], ap[:, 3].mean(), ap.mean(1)  # [P, R, AP@0.5, AP@0.5:0.95]
         mp, mr, map50, map75 , map = p.mean(), r.mean(), ap50.mean(), ap75.mean(), ap.mean()
+        acc = (1/map75)*mp
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
     else:
         nt = torch.zeros(1)
