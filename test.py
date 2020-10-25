@@ -198,7 +198,7 @@ def test(data,
         p, r, ap, f1, ap_class = ap_per_class(*stats, plot=plots, fname=save_dir / 'precision-recall_curve.png')
         p, r, ap50, ap75, ap = p[:, 0], r[:, 0], ap[:, 0], ap[:, 3].mean(), ap.mean(1)  # [P, R, AP@0.5, AP@0.5:0.95]
         mp, mr, map50, map75 , map = p.mean(), r.mean(), ap50.mean(), ap75.mean(), ap.mean()
-        acc = (1/ap[:, 3].sum())*p.sum()
+        acc = p.mean()
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
     else:
         nt = torch.zeros(1)
