@@ -196,7 +196,7 @@ def test(data,
     stats = [np.concatenate(x, 0) for x in zip(*stats)]  # to numpy
     if len(stats) and stats[0].any():
         p, r, ap, f1, ap_class = ap_per_class(*stats, plot=plots, fname=save_dir / 'precision-recall_curve.png')
-        p, r, ap50, ap75, ap = p[:, 0], r[:, 0], ap[:, 0], ap[:, 3].mean(1), ap.mean(1)  # [P, R, AP@0.5, AP@0.5:0.95]
+        p, r, ap50, ap75, ap = p[:, 0], r[:, 0], ap[:, 0], ap[:, 3].mean(), ap.mean(1)  # [P, R, AP@0.5, AP@0.5:0.95]
         mp, mr, map50, map75 , map = p.mean(), r.mean(), ap50.mean(), ap75.mean(), ap.mean()
         acc = (1/ap[:, 3].sum())*p.sum()
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
