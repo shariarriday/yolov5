@@ -510,7 +510,7 @@ def compute_loss(p, targets, model):  # predictions, targets, model
             pxy = ps[:, :2].sigmoid() * 2. - 0.5
             pwh = (ps[:, 2:4].sigmoid() * 2) ** 2 * anchors[i]
             pbox = torch.cat((pxy, pwh), 1).to(device)  # predicted box
-            iou = bbox_iou(pbox.T, tbox[i], x1y1x2y2=False, GIoU=True)  # iou(prediction, target)
+            iou = bbox_iou(pbox.T, tbox[i], x1y1x2y2=False, CIoU=True)  # iou(prediction, target)
             lbox += (1.0 - iou).mean()  # iou loss
 
             # Objectness
@@ -923,7 +923,7 @@ def apply_classifier(x, model, img, im0):
 
 def fitness(x):
     # Returns fitness (for use with results.txt or evolve.txt)
-    w = [0.25, 0.25, 0.25, 0.25]  # weights for [P, R, mAP@0.5, mAP@0.5:0.95]
+    w = [0.4, 0.1, 0.1, 0.4]  # weights for [P, R, mAP@0.5, mAP@0.5:0.95]
     return (x[:, :4] * w).sum(1)
 
 

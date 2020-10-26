@@ -22,8 +22,8 @@ def test(data,
          weights=None,
          batch_size=16,
          imgsz=640,
-         conf_thres=0.05,
-         iou_thres=0.5,  # for NMS
+         conf_thres=0.5,
+         iou_thres=0.6,  # for NMS
          save_json=False,
          single_cls=False,
          augment=False,
@@ -198,7 +198,7 @@ def test(data,
         p, r, ap, f1, ap_class = ap_per_class(*stats, plot=plots, fname=save_dir / 'precision-recall_curve.png')
         p, r, ap50, ap75, ap = p[:, 0], r[:, 0], ap[:, 0], ap[:, 3].mean(), ap.mean(1)  # [P, R, AP@0.5, AP@0.5:0.95]
         mp, mr, map50, map75 , map = p.mean(), r.mean(), ap50.mean(), ap75.mean(), ap.mean()
-        acc = p.mean()
+        acc = (1/map75)*mp
         nt = np.bincount(stats[3].astype(np.int64), minlength=nc)  # number of targets per class
     else:
         nt = torch.zeros(1)
@@ -206,7 +206,7 @@ def test(data,
     # Print results
     pf = '%20s' + '%12.3g' * 8  # print format
     print(pf % ('all', seen, nt.sum(), mp, mr, map50, map75, map , acc))
-
+    pf = '%20s' + '%12.3g' * 6  # print format
     # Print results per class
     if verbose and nc > 1 and len(stats):
         for i, c in enumerate(ap_class):
