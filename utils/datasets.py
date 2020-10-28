@@ -13,7 +13,7 @@ import torch
 from PIL import Image, ExifTags
 from torch.utils.data import Dataset
 from tqdm import tqdm
-
+import albumentations as A
 from utils.general import xyxy2xywh, xywh2xyxy, torch_distributed_zero_first
 
 help_url = 'https://github.com/ultralytics/yolov5/wiki/Train-Custom-Data'
@@ -565,6 +565,35 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
             # Apply cutouts
             # if random.random() < 0.9:
             #     labels = cutout(img, labels)
+
+            transform = A.Compose([
+                A.OneOf([
+                    A.IAAAdditiveGaussianNoise(),
+                    A.GaussNoise(),
+                ], p=0.2),
+                A.OneOf([
+                    A.MotionBlur(p=.2),
+                    A.MedianBlur(blur_limit=3, p=0.1),
+                    A.Blur(blur_limit=3, p=0.1),
+                    A.MultiplicativeNoise(multiplier=[0.5, 1.5], per_channel=True, p=1)
+                ], p=0.2),
+                A.OneOf([
+                    A.CLAHE(clip_limit=2),
+                    A.IAASharpen(),
+                    A.IAAEmboss(),
+                    A.RandomBrightnessContrast(),
+                    A.RandomShadow(num_shadows_lower=1, num_shadows_upper=1,
+                                   shadow_dimension=5, shadow_roi=(0, 0.5, 1, 1), p=1),
+                    A.Cutout(num_holes=30, max_h_size=20,max_w_size=20, fill_value=127, p=1),
+                    A.RandomFog(fog_coef_lower=0.05, fog_coef_upper=.2),
+                    A.RandomRain()
+                    A.ChannelShuffle(),
+                    A.ChannelDropout()
+                ], p=0.3),
+                A.HueSaturationValue(p=0.3),
+            ])
+
+            img = transform(image=img)['image']
 
         nL = len(labels)  # number of labels
         if nL:
