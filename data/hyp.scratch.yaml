@@ -2,8 +2,8 @@
 # Generations: 44
 # Metrics:      0.161     0.309     0.214     0.106    0.0305     0.023    0.0618
 
-lr0: 0.0183
-lrf: 0.202
+lr0: 0.01
+lrf: 0.1
 momentum: 0.839
 weight_decay: 0.00038
 warmup_epochs: 3.04
