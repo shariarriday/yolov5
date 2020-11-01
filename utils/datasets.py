@@ -635,7 +635,7 @@ class LoadImagesAndLabels(Dataset):  # for training/testing
             #     A.HueSaturationValue(p=0.3),
             # ])
 
-            img = transform(image=img)['image']
+            # img = transform(image=img)['image']
 
         nL = len(labels)  # number of labels
         if nL:
