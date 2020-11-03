@@ -29,4 +29,4 @@ perspective: 0.0
 flipud: 0.0
 fliplr: 0.5
 mosaic: 1.0
-mixup: 0.0
+mixup: 1.0
